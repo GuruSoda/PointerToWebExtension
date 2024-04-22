@@ -1,0 +1,15 @@
+{
+    "manifest_version": 3,
+    "name": "Pointer to Web",
+    "description": "Pointer to Web Extension for chrome",
+    "version": "0.1",
+    "action": {
+      "default_popup": "index.html",
+      "default_icon": "img/chicken-24.png"
+    },
+    "icons": {
+        "24": "img/chicken-24.png",
+        "48": "img/chicken-48.png"
+      },
+    "permissions": ["tabs"]
+}
