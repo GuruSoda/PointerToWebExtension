@@ -60,6 +60,7 @@ function addPointer (element) {
     var instances = M.Chips.init(elems, {});
 
     if (typeof chrome !== 'undefined') {
+        console.log('tabs:', chrome.tabs)
         chrome.tabs.query({ active: true, lastFocusedWindow: true }, function (info) {
             document.getElementById('titulo').value = info[0].title
             document.getElementById('url').value = info[0].url

@@ -1,0 +1,6 @@
+GET https://fabricio.planetaguru.com.ar/pointer/pointers HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJXWXdSZmNNc1Y3YkptQXRhR2phNnkiLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTcxMzc2NzM3OCwiZXhwIjoxNzEzODUzNzc4fQ.EgsCLGiw0IAj_ptU2BeX4DJKFmSmds9mfcZ6SbCSzFM
+
+###
+GET https://fabricio.planetaguru.com.ar/pointer/pointers/pointer?url=https://dev.to/dcodeyt/building-a-single-page-app-without-frameworks-hl9 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJXWXdSZmNNc1Y3YkptQXRhR2phNnkiLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTcxMzc2NzM3OCwiZXhwIjoxNzEzODUzNzc4fQ.EgsCLGiw0IAj_ptU2BeX4DJKFmSmds9mfcZ6SbCSzFM
