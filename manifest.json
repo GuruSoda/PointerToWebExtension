@@ -11,5 +11,5 @@
         "24": "img/chicken-24.png",
         "48": "img/chicken-48.png"
       },
-    "permissions": ["tabs"]
+    "permissions": ["tabs", "storage"]
 }

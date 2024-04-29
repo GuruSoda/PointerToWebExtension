@@ -1,11 +1,40 @@
 document.addEventListener('DOMContentLoaded', app)
 
-function app () {
-    changeComponent('newPointer')
+async function app () {
+    M.AutoInit()
+//    let  dataPointer = {}
 
-    document.getElementById("search").addEventListener("click", e => changeComponent('search'))
-    document.getElementById("add").addEventListener("click", e => changeComponent('newPointer'))
-    document.getElementById("list").addEventListener("click", e => changeComponent('contact'))
+//    changeComponent('progreso')
+
+    changeComponent('login')
+
+    // try {
+    //     chrome.tabs.query({ active: true, lastFocusedWindow: true }, async function (info) {
+    //         try {
+    //             dataPointer = await getPointerByURL(info[0].url)
+
+    //             changeComponent('header')
+
+    //             changeComponent('newPointer', dataPointer)
+    //         } catch (e) {
+    //             switch (e.status) {
+    //                 case 401: 
+    //                     changeComponent('login')
+    //                     break;
+    //                 case 404:
+    //                     changeComponent('header')
+    //                     changeComponent('newPointer', dataPointer)
+    //                     break;
+    //                 default:
+    //                     changeComponent('error', {message: 'Error Verificando URL'})
+    //             }
+    //         }
+    //     })
+
+    // } catch (e) {
+    //     console.log('Acceso denegado!!!')
+    //     changeComponent('error', {message: 'Problemas con el Login'})
+    // }
 }
 
 function allTitleAndUrl() {
@@ -14,10 +43,32 @@ function allTitleAndUrl() {
     } )
 }
 
-function changeComponent(page) {
+function changeComponent(page, option) {
     var contentDiv = document.getElementById('body')
  
     switch (page) {
+        case 'login':
+            componentLogin(document.getElementById('root'))
+            break;
+        case 'header':
+            document.getElementById('root').innerHTML = `
+            <header>
+                <nav>
+                    <div class="nav-wrapper">
+                    <a href="#" class="brand-logo right"><i class="material-icons">cloud_upload</i></a>
+                    <ul id="nav-mobile" class="left">
+                        <li><a id="search" href="#">Search</a></li>
+                        <li><a id="add" href="#">Add New</a></li>
+                        <li><a id="list" href="#">List</a></li>
+                    </ul>
+                    </div>
+                </nav>
+            </header>`
+
+            document.getElementById("search").addEventListener("click", e => changeComponent('search'))
+            document.getElementById("add").addEventListener("click", e => changeComponent('newPointer'))
+            document.getElementById("list").addEventListener("click", e => changeComponent('contact'))
+            break;
         case 'home':
             contentDiv.innerHTML = `
                 <h2>
@@ -60,9 +111,38 @@ function changeComponent(page) {
                 </form>`;
             break;
         case 'newPointer':
-                addPointer(contentDiv)
+                addPointer(contentDiv, option)
                 break;
+        case 'error':
+            contentDiv.innerHTML =
+                `<div class="row">
+                    <div class="col s12">
+                        <div class="card pink darken-4 pulse" sytle="margin: auto">
+                            <div class="card-content white-text center-align">
+                                <span class="card-title left-align">Error</span>
+                                <p style="font-size: 1.5em;">${option.message}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+                break;
+        case 'informacion':
+            contentDiv.innerHTML =
+                ` <div class="row">
+                    <div class="col s12">
+                        <div class="card-panel teal center-align">
+                        <span class="white-text" style="font-size: 1.5em;">${option.message}</span>
+                        </div>
+                    </div>
+                </div>`
+                break;
+        case 'progreso':
+            contentDiv.innerHTML =
+                `<div class="progress">
+                    <div class="indeterminate"></div>
+                </div>`
+            break;
         default:
-                contentDiv.innerHTML = '<h2>Page not found!</h2>';
+            contentDiv.innerHTML = '<h2>Page not found!</h2>';
     }
 }

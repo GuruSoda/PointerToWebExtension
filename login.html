@@ -4,9 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login a Pointer to Web</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/materialize.min.css">
 </head>
 <body>
-    
+    <main class="container">
+        <div class="card grey lighten-2">
+            <div class="card-content white-text">
+                <span class="card-title black-text center">Ingreso a Puntero Web</span>
+                <form id="form-login">
+                    <div class="row">
+                        <div class="input-field col s12">
+                        <input id="email" type="email" class="validate">
+                        <label for="email">Email</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                        <input id="password" type="password" class="validate">
+                        <label for="password">Password</label>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom: 0px;">
+                        <div class="col left-align">
+                            <button id="guardar" class="waves-effect waves-light btn green lighten-2" type="submit" value="crear">Ingresar<i class="material-icons right">send</i></button>
+                        </div>
+                        <div class="right-align">
+                            <button id="borrar" class="waves-effect waves-light btn green lighten-2" type="submit" value="borrar">Cancelar<i class="material-icons right">cancel</i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>    
+    <script src="js/materialize.min.js"></script>
 </body>
 </html>
 

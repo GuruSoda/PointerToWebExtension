@@ -1,0 +1,19 @@
+@baseUrl = https://fabricio.planetaguru.com.ar/pointer
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJXWXdSZmNNc1Y3YkptQXRhR2phNnkiLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTcxNDAyNTM5MiwiZXhwIjoxNzE0MTExNzkyfQ._QPwR0nakhFNhW8wljhQZUXROaDLBEqem39SKIyonEA
+
+
+POST http://{{baseUrl}}/auth/login HTTP/1.1
+content-type: application/json
+
+{
+    "email": "admin@localhost",
+    "password": "newage"
+}
+
+###
+GET http://{{baseUrl}}/pointers/ HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+GET http://{{baseUrl}}/pointers/count HTTP/1.1
+Authorization: Bearer {{token}}
