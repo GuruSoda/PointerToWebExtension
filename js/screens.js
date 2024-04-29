@@ -73,22 +73,18 @@ async function addPointer (element) {
 
     let  dataPointer = {}
 
-    try {
 //        changeComponent('progreso')
-        chrome.tabs.query({ active: true, lastFocusedWindow: true }, async function (info) {
-            try {
-                dataPointer = await getPointerByURL(info[0].url)
-            } catch (e) {
-                if (e.status === 401) return changeComponent('login')
-            }
+    chrome.tabs.query({ active: true, lastFocusedWindow: true }, async function (info) {
+        element.innerHTML = pointerForm
 
-            element.innerHTML = pointerForm
+        var elemSelect = document.querySelectorAll('select')
+        var select = M.FormSelect.init(elemSelect, {})
 
-            var elemSelect = document.querySelectorAll('select')
-            var select = M.FormSelect.init(elemSelect, {})
+        var elemChips = document.querySelectorAll('.chips')
+        var chips = M.Chips.init(elemChips, {})
 
-            var elemChips = document.querySelectorAll('.chips')
-            var chips = M.Chips.init(elemChips, {})
+        try {
+            dataPointer = await getPointerByURL(info[0].url)
 
             document.getElementById('guardar').classList.add("disabled")
 
@@ -98,20 +94,20 @@ async function addPointer (element) {
             pointerToForm(dataPointer, chips, elemSelect)
 
             console.log('puntero:', dataPointer)
-            document.getElementById("form-pointer").addEventListener("submit", listenerButtons)
-        })
-    } catch (e) {        
-        document.getElementById('actualizar').classList.add("disabled")
-        document.getElementById('borrar').classList.add("disabled")
+        } catch (e) {
+            if (e.status === 401) return changeComponent('login')
 
-        if (typeof chrome !== 'undefined') {
-            chrome.tabs.query({ active: true, lastFocusedWindow: true }, async function (info) {
-            
-                document.getElementById('titulo').value = info[0].title
-                document.getElementById('url').value = info[0].url
-            })
+            document.getElementById('actualizar').classList.add("disabled")
+            document.getElementById('borrar').classList.add("disabled")
+
+            dataPointer.title = info[0].title
+            dataPointer.url  = info[0].url
+
+            pointerToForm(dataPointer, chips, elemSelect)
         }
-    }
+
+        document.getElementById("form-pointer").addEventListener("submit", listenerButtons)
+    })
 
     async function listenerButtons(e) {
         console.log(e.submitter.id)
@@ -167,10 +163,11 @@ async function addPointer (element) {
     function pointerToForm(dataPointer, chips, select) {
         document.getElementById('titulo').value = dataPointer.title
         document.getElementById('url').value = dataPointer.url
-        document.getElementById('description').value = dataPointer.description
-        document.getElementById('stars').value = dataPointer.stars.toString()
+        document.getElementById('description').value = dataPointer.description || ''
+        document.getElementById('stars').value = (dataPointer.stars) ? dataPointer.stars.toString() : "3"
 
-        dataPointer.labels.forEach(chip => chips[0].addChip({tag: chip}))
+        if (dataPointer.labels)
+            dataPointer.labels.forEach(chip => chips[0].addChip({tag: chip}))
 
         M.FormSelect.init(select)
         M.updateTextFields()
@@ -210,13 +207,17 @@ async function componentLogin(element) {
         </div>
     </main>`
 
-    const accessToken = await getItem('accessToken')
+//    const accessToken = await getItem('accessToken')
 
-    // Si tengo un accessToken, puedo acceder con este token
-    if (!accessToken.accessToken) {
+    let counters = {}
 
-        console.log('Sin tokens, se hace login')
+    try {
+        counters = await svcCountPointers()
+        console.log(counters)
 
+        changeComponent('header')
+        changeComponent('newPointer')
+    } catch (e) {
         element.innerHTML = loginForm
 
         document.getElementById("form-login").addEventListener("submit", async function(e) {
@@ -238,8 +239,5 @@ async function componentLogin(element) {
                 return 
             }
         })
-    } else {        
-        changeComponent('header')
-        changeComponent('newPointer')
     }
 }
