@@ -1,8 +1,8 @@
 async function addPointer (element) {
     const pointerForm = `
-    <div id="notificaciones-add" class="row" style="margin-bottom: 0px;display: none">
+    <div id="notificaciones-add" class="row" style="/*margin-bottom: 0px;*/display: none">
         <div class="col s12">
-            <div class="card-panel green accent-2 center-align" style="padding:0.75rem">
+            <div class="card-panel red darken-1 center-align" style="padding:0.75rem">
                 <span class="white-text" style="font-size: 1.2rem;"></span>
             </div>
         </div>
@@ -14,9 +14,9 @@ async function addPointer (element) {
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" style="margin-top: 2rem">
         <div class="col s12">
-            <div class="card-panel">
+            <div classsss="card-panel brown lighten-5">
                 <form id="form-pointer">
                     <div class="row" style="margin-bottom: 0px;">
                         <div class="input-field col s12" style="margin-top:0px">
@@ -57,13 +57,13 @@ async function addPointer (element) {
                     </div>
                     <div class="row" style="margin-bottom: 0px;">
                         <div class="col s4 left-align">
-                            <button id="guardar" class="waves-effect waves-light btn" type="submit" value="crear">Guardar<i class="material-icons right">send</i></button>
+                            <button id="guardar" class="waves-effect waves-light btn deep-purple lighten-2" type="submit" value="crear">Guardar<i class="material-icons right">send</i></button>
                         </div>
                         <div class="col s4 center">
-                            <button id="actualizar" class="waves-effect waves-light btn" type="submit" value="borrar">Actualizar<i class="material-icons right">update</i></button>
+                            <button id="actualizar" class="waves-effect waves-light btn deep-purple lighten-2" type="submit" value="borrar">Actualizar<i class="material-icons right">update</i></button>
                         </div>
                         <div class="col s4 right-align">
-                            <button id="borrar" class="waves-effect waves-light btn" type="submit" value="borrar">Borrar<i class="material-icons right">cancel</i></button>
+                            <button id="borrar" class="waves-effect waves-light btn deep-purple lighten-2" type="submit" value="borrar">Borrar<i class="material-icons right">cancel</i></button>
                         </div>
                     </div>
                 </form>
@@ -73,15 +73,14 @@ async function addPointer (element) {
 
     let  dataPointer = {}
 
-//        changeComponent('progreso')
+    let elemSelect, select
+    let elemChips, chips
+
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, async function (info) {
         element.innerHTML = pointerForm
 
-        var elemSelect = document.querySelectorAll('select')
-        var select = M.FormSelect.init(elemSelect, {})
-
-        var elemChips = document.querySelectorAll('.chips')
-        var chips = M.Chips.init(elemChips, {})
+        elemChips = document.querySelectorAll('.chips')
+        chips = M.Chips.init(elemChips, {})
 
         try {
             dataPointer = await getPointerByURL(info[0].url)
@@ -91,7 +90,7 @@ async function addPointer (element) {
             document.querySelector('#notificaciones-add span').textContent = "URL Ya Existe en el almacen de punteros"
             document.getElementById('notificaciones-add').style.display = 'block'
 
-            pointerToForm(dataPointer, chips, elemSelect)
+            pointerToForm(dataPointer)
 
             console.log('puntero:', dataPointer)
         } catch (e) {
@@ -103,7 +102,7 @@ async function addPointer (element) {
             dataPointer.title = info[0].title
             dataPointer.url  = info[0].url
 
-            pointerToForm(dataPointer, chips, elemSelect)
+            pointerToForm(dataPointer)
         }
 
         document.getElementById("form-pointer").addEventListener("submit", listenerButtons)
@@ -160,16 +159,18 @@ async function addPointer (element) {
         return Pointer
     }
     
-    function pointerToForm(dataPointer, chips, select) {
+    function pointerToForm(dataPointer) {
+        console.log('pointer:', dataPointer)
+
         document.getElementById('titulo').value = dataPointer.title
         document.getElementById('url').value = dataPointer.url
         document.getElementById('description').value = dataPointer.description || ''
-        document.getElementById('stars').value = (dataPointer.stars) ? dataPointer.stars.toString() : "3"
+        document.getElementById('stars').value = dataPointer.stars || 2
 
         if (dataPointer.labels)
             dataPointer.labels.forEach(chip => chips[0].addChip({tag: chip}))
 
-        M.FormSelect.init(select)
+        M.FormSelect.init(document.querySelectorAll('select'))
         M.updateTextFields()
     }
 }
@@ -207,11 +208,10 @@ async function componentLogin(element) {
         </div>
     </main>`
 
-//    const accessToken = await getItem('accessToken')
-
     let counters = {}
 
     try {
+//        changeComponent('progreso')
         counters = await svcCountPointers()
         console.log(counters)
 

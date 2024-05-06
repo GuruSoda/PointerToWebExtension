@@ -263,13 +263,13 @@ async function svcCountPointers() {
     }
 }
 
-
 async function svcRefreshTokens() {
     try {
         const tokens = await getItem(['accessToken', 'refreshToken'])
 
-        const response = await auth.post('/refreshtoken', {refreshTokens:tokens.refreshToken}, {headers: {'Authorization': `Bearer ${tokens.accessToken}`}})
-        //response.data.json; 
+        const response = await auth.post('/refreshtoken', {refreshToken:tokens.refreshToken})
+
+        //response.data.json;
 //        console.log('data:', response.data);
         // console.log('status:', response.status);
         // console.log('statusText:', response.statusText);
@@ -332,4 +332,3 @@ async function svcLogin(email, password) {
         throw response
     }
 }
-

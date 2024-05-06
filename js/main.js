@@ -1,40 +1,10 @@
 document.addEventListener('DOMContentLoaded', app)
 
 async function app () {
-    M.AutoInit()
-//    let  dataPointer = {}
 
-//    changeComponent('progreso')
+    M.AutoInit()
 
     changeComponent('login')
-
-    // try {
-    //     chrome.tabs.query({ active: true, lastFocusedWindow: true }, async function (info) {
-    //         try {
-    //             dataPointer = await getPointerByURL(info[0].url)
-
-    //             changeComponent('header')
-
-    //             changeComponent('newPointer', dataPointer)
-    //         } catch (e) {
-    //             switch (e.status) {
-    //                 case 401: 
-    //                     changeComponent('login')
-    //                     break;
-    //                 case 404:
-    //                     changeComponent('header')
-    //                     changeComponent('newPointer', dataPointer)
-    //                     break;
-    //                 default:
-    //                     changeComponent('error', {message: 'Error Verificando URL'})
-    //             }
-    //         }
-    //     })
-
-    // } catch (e) {
-    //     console.log('Acceso denegado!!!')
-    //     changeComponent('error', {message: 'Problemas con el Login'})
-    // }
 }
 
 function allTitleAndUrl() {
@@ -53,9 +23,14 @@ function changeComponent(page, option) {
         case 'header':
             document.getElementById('root').innerHTML = `
             <header>
-                <nav>
+                <nav class="deep-purple lighten-3">
                     <div class="nav-wrapper">
-                    <a href="#" class="brand-logo right"><i class="material-icons">cloud_upload</i></a>
+                    <a href="#!" class="brand-logo right dropdown-trigger" data-target="menu-user"><i class="material-icons">person</i></a>
+                    <!-- Dropdown Structure -->
+                    <ul id="menu-user" class="dropdown-content deep-purple lighten-4">
+                        <li><a href="#!"><i class="material-icons">settings</i>Settings</a></li>
+                        <li><a href="#!"><i class="material-icons">exit_to_app</i>Logout</a></li>
+                    </ul>
                     <ul id="nav-mobile" class="left">
                         <li><a id="search" href="#">Search</a></li>
                         <li><a id="add" href="#">Add New</a></li>
@@ -65,9 +40,12 @@ function changeComponent(page, option) {
                 </nav>
             </header>`
 
-            document.getElementById("search").addEventListener("click", e => changeComponent('search'))
+            var elems = document.querySelectorAll('.dropdown-trigger');
+            var instances = M.Dropdown.init(elems, {});
+
+            document.getElementById("search").addEventListener("click", e => changeComponent('error', {message: 'Esto no esta'}))
             document.getElementById("add").addEventListener("click", e => changeComponent('newPointer'))
-            document.getElementById("list").addEventListener("click", e => changeComponent('contact'))
+            document.getElementById("list").addEventListener("click", e => changeComponent('list'))
             break;
         case 'home':
             contentDiv.innerHTML = `
@@ -89,26 +67,35 @@ function changeComponent(page, option) {
                 </p>
             `;
             break;
-        case 'contact':
+        case 'list':
             contentDiv.innerHTML = 
-                `<h2>Contact Us</h2> 
-                <p>
-                    Feel free to reach out to us!
-                </p> 
-                <form> 
-                   <label for="name">Name:</label> 
-                   <input type="text" id="name" name="name" 
-                          placeholder="Your Name" required>
-                   <label for="email">Email:</label> 
-                   <input type="email" id="email" name="email" 
-                          placeholder="Your Email" required>
-                   <label for="message">Message:</label> 
-                   <textarea id="message" name="message" 
-                             placeholder="Your Message" 
-                             rows="4" required>
-                    </textarea>
-                   <button type="submit">Send Message</button> 
-                </form>`;
+                `<table class="brown lighten-5">
+                <thead>
+                  <tr>
+                      <th>Name</th>
+                      <th>Item Name</th>
+                      <th>Item Price</th>
+                  </tr>
+                </thead>
+        
+                <tbody>
+                  <tr>
+                    <td>Alvin</td>
+                    <td>Eclair</td>
+                    <td>$0.87</td>
+                  </tr>
+                  <tr>
+                    <td>Alan</td>
+                    <td>Jellybean</td>
+                    <td>$3.76</td>
+                  </tr>
+                  <tr>
+                    <td>Jonathan</td>
+                    <td>Lollipop</td>
+                    <td>$7.00</td>
+                  </tr>
+                </tbody>
+              </table>`;
             break;
         case 'newPointer':
                 addPointer(contentDiv, option)
@@ -130,7 +117,7 @@ function changeComponent(page, option) {
             contentDiv.innerHTML =
                 ` <div class="row">
                     <div class="col s12">
-                        <div class="card-panel teal center-align">
+                        <div class="card-panel teal lighten-2 center-align">
                         <span class="white-text" style="font-size: 1.5em;">${option.message}</span>
                         </div>
                     </div>
