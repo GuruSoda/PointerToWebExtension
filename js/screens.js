@@ -241,3 +241,74 @@ async function componentLogin(element) {
         })
     }
 }
+
+function cardPointer(dataPointer) {
+
+    let labels = ''
+
+    if (dataPointer.labels) {
+        dataPointer.labels.forEach(label => {
+            labels += `<div class="chip grey darken-2 white-text">${label}</div>`
+        })
+    }
+
+    const card = `
+        <div class="col s12 m12">
+            <div class="card horizontal light-green lighten-1" style="margin: 1rem 0rem 1rem 0;">
+                <!-- <div class="card-image valign-wrapper">
+                    <img src="https://materializecss.com/res/materialize.svg">
+                </div> -->
+                <div class="card-content white-text" style="padding:0rem 0.25rem 0rem 0.25rem;width: 100%;">
+                    <p style="font-size: 1.35rem;margin-bottom: 0px;padding: 0.25rem;">${dataPointer.title}</p>
+                    <p style="padding-left: 0.25rem;"><a class="blue-grey-text" href="${dataPointer.url}">${dataPointer.url}</a></p>
+                    <div class="card-action" style="padding-left: 10px;padding-bottom: 0px;padding-right: 0px;padding-top: 8px;">
+                    <div id="labels" class="left">
+                    ${labels}
+                    </div>
+                    <div class="right" style="padding-top: 0.35rem;">
+                        <a style="margin-right: 0px;margin-left: 1rem;" href="#"><i class="material-icons brown-text" style="font-size: 1.75rem;">edit</i></a>
+                        <a style="margin-right: 0px;margin-left: 1rem;" href="#"><i class="material-icons brown-text" style="font-size: 1.75rem;">delete</i></a>
+                    </div>
+                </div>
+        </div>
+            </div>
+        </div>`
+
+    return card
+}
+
+function MakeListCard(listPointers) {
+
+//    console.log('listPointers:', listPointers)
+    let listCards = '<ul>'
+
+    listPointers.forEach(function (pointer) {
+        let card = '<li>'
+        card += cardPointer(pointer)
+        card += '</li>'
+
+        listCards += card
+    })
+
+    listCards += '</ul>'
+
+    return listCards
+}
+
+async function componentList(element) {
+
+    try {
+        const pointers = await svcGetPointers()
+        console.log('pointers:', pointers)
+        element.innerHTML = `
+            <div style="width:98%;margin: 0 auto">
+                ${MakeListCard(pointers)}
+            </div>
+        `
+    } catch (e) {
+        if (e.status === 401) return changeComponent('login')
+        console.log(e)
+        changeComponent('error', {message: e.errorField})
+        return 
+    }
+}

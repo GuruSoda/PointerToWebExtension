@@ -332,3 +332,35 @@ async function svcLogin(email, password) {
         throw response
     }
 }
+
+async function svcGetPointers() {
+    try {
+        const response = await pointers.get('/')
+        //response.data.json; 
+//        console.log('data:', response.data);
+        // console.log('status:', response.status);
+        // console.log('statusText:', response.statusText);
+        // console.log('headers:', response.headers);
+        // console.log('config:', response.config);
+        return response.data.body
+    } catch (error) {
+        console.log('error')
+        // console.log('error.name', error.name)
+        // console.log('error.message', error.message)
+        // console.log('error.code', error.code)
+        // console.log('error.status', error.status)
+        // console.log('error.stack', error.stack)
+        // console.log('error.config', error.config)
+        console.log('error', error)
+//        console.log('error', error.response.data.error)
+//        console.log('error.response', error.response)
+        let response = {
+            status: error.response.status,
+            statusText: error.response.statusText,
+            errorField: error.response.data.error,
+            bodyField: error.response.data.body
+        }
+
+        throw response
+    }
+}

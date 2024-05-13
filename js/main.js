@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', app)
 
 async function app () {
+    allTitleAndUrl()
 
     M.AutoInit()
 
@@ -9,6 +10,7 @@ async function app () {
 
 function allTitleAndUrl() {
     chrome.tabs.query({}, function (tabs) {
+        console.log(tabs)
         return tabs.map(tab => { return { title: tab.title, url: tab.url}})
     } )
 }
@@ -68,34 +70,7 @@ function changeComponent(page, option) {
             `;
             break;
         case 'list':
-            contentDiv.innerHTML = 
-                `<table class="brown lighten-5">
-                <thead>
-                  <tr>
-                      <th>Name</th>
-                      <th>Item Name</th>
-                      <th>Item Price</th>
-                  </tr>
-                </thead>
-        
-                <tbody>
-                  <tr>
-                    <td>Alvin</td>
-                    <td>Eclair</td>
-                    <td>$0.87</td>
-                  </tr>
-                  <tr>
-                    <td>Alan</td>
-                    <td>Jellybean</td>
-                    <td>$3.76</td>
-                  </tr>
-                  <tr>
-                    <td>Jonathan</td>
-                    <td>Lollipop</td>
-                    <td>$7.00</td>
-                  </tr>
-                </tbody>
-              </table>`;
+            componentList(contentDiv)
             break;
         case 'newPointer':
                 addPointer(contentDiv, option)
