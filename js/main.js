@@ -37,6 +37,7 @@ function changeComponent(page, option) {
                         <li><a id="search" href="#">Search</a></li>
                         <li><a id="add" href="#">Add New</a></li>
                         <li><a id="list" href="#">List</a></li>
+                        <li><a id="current" href="#">Currents Tabs</a></li>
                     </ul>
                     </div>
                 </nav>
@@ -56,18 +57,8 @@ function changeComponent(page, option) {
                 </h2>
             `;
             break;
-        case 'about':
-            contentDiv.innerHTML = `
-                <h2>About Us</h2>
-                <p>
-                    This is the about page content. Learn more 
-                    about our purpose and team.
-                </p>
-                <p>
-                    We're passionate about creating engaging and
-                    informative SPAs.
-                </p>
-            `;
+        case 'search':
+            componentSearch(contentDiv)
             break;
         case 'list':
             componentList(contentDiv)
