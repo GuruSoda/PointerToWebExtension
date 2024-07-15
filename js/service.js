@@ -60,16 +60,19 @@ pointers.interceptors.response.use(function (response) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     if (error.response && error.response.status === 401) {
+        const originalRequest = error.config
+
         try {
             const tokens = await svcRefreshTokens()
+
             if (tokens) {
-                error.config.headers['Authorization'] = `Bearer ${tokens.accessToken}`;
-                return instance(error.config)
+                originalRequest.headers['Authorization'] = `Bearer ${tokens.accessToken}`;
+                return pointers(originalRequest);
             }
         } catch (e) {
             console.log('Error en interceptor response:', e)
-            chrome.storage.local.clear()
-            Promise.reject(error);
+//            chrome.storage.local.clear()
+            return Promise.reject(error);
         }
     }
     return Promise.reject(error);
@@ -264,8 +267,12 @@ async function svcCountPointers() {
 }
 
 async function svcRefreshTokens() {
+    console.log('svcRefreshTokens')
+
     try {
         const tokens = await getItem(['accessToken', 'refreshToken'])
+
+        console.log('tokens:', tokens)
 
         const response = await auth.post('/refreshtoken', {refreshToken:tokens.refreshToken})
 
@@ -275,6 +282,7 @@ async function svcRefreshTokens() {
         // console.log('statusText:', response.statusText);
         // console.log('headers:', response.headers);
         // console.log('config:', response.config);
+        console.log('tokens nuevos:', response.data.body)
         await setItem(response.data.body)
         return response.data.body
     } catch (error) {

@@ -11,11 +11,12 @@
         "24": "img/chicken-24.png",
         "48": "img/chicken-48.png"
       },
-    "permissions": ["tabs", "storage"],
     "background": {
+      "page": "background.js",
       "service_worker": "background.js",
       "type": "module"
-    }
+    },
+    "permissions": ["tabs", "storage"]
 }
 
 //     "host_permissions": ["https://fabricio.planetaguru.com.ar/*"],
